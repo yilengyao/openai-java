@@ -1,0 +1,163 @@
+scalar Long
+scalar Upload
+
+directive @connection on UNION
+
+union ModelsOutput @connection = OpenAiResponse | Model
+
+type Query {
+    models(id: String): ModelsOutput
+}
+
+type Mutation {
+    completion(completionInput: CompletionInput!): CompletionOutput
+    edit(editInput: EditInput!): EditResponse
+    createImage(createImageInput: CreateImageInput!): ImageResponse
+    editImage(image: Upload!, mask: Upload, editImageInput: EditImageInput!): ImageResponse
+}
+
+type Model {
+    id: String
+    object: String
+    created: Long
+    ownedBy: String
+    permission: [Permission]
+    root: String
+    parent: String
+}
+
+type Permission {
+    id: String
+    object: String
+    created: Long
+    allowCreateEngine: Boolean
+    allowSampling: Boolean
+    allowLogProbs: Boolean
+    allowSearchIndices: Boolean
+    allowView: Boolean
+    allowFineTuning: Boolean
+    organization: String
+    group: String
+    isBlocking: Boolean
+}
+
+type OpenAiResponse {
+    data: [Model]
+    object: String
+}
+
+input CompletionInput {
+    model: String!
+    prompt: String
+    suffix: String
+    max_tokens: Int
+    temperature: Float
+    top_p: Float
+    n: Int
+    stream: Boolean
+    logprobs: Int
+    echo: Boolean
+    stop: [String]
+    presence_penalty: Float
+    frequency_penalty: Float
+    best_of: Int
+    logit_bias: [LogitBiasInput]
+    user: String
+}
+
+input LogitBiasInput {
+    key: String!
+    value: Int!
+}
+
+type CompletionOutput {
+    id: ID!
+    object: String
+    created: Long
+    model: String
+    choices: [CompletionChoice]
+    usage: Usage
+}
+
+type CompletionChoice {
+    text: String
+    index: Int
+    logprobs: LogProbResult
+    finish_reason: String
+}
+
+type LogProbResult {
+    tokens: [String]
+    token_lobprobs: [Float]
+    top_logprobs: [[TopLogProb]]
+    text_offset: [Int]
+}
+
+type TopLogProb {
+    key: String
+    value: Float
+}
+
+type Usage {
+    prompt_tokens: Int
+    completion_tokens: Int
+    total_tokens: Int
+}
+
+input EditInput {
+    model: String!
+    input: String
+    instruction: String!
+    n: Int
+    temperature: Float
+    top_p: Float
+}
+
+type EditResponse {
+    object: String
+    created: Long
+    choices: [EditChoice]
+    usage: Usage
+}
+
+type EditChoice {
+    text: String
+    index: Int
+}
+
+input CreateImageInput {
+    prompt: String!
+    n: Int
+    size: ImageSize
+    responseFormat: ImageResponseFormat
+    user: String
+}
+
+enum ImageSize {
+    X256
+    X512
+    X1024
+}
+
+enum ImageResponseFormat {
+    URL
+    B64_JSON
+}
+
+type ImageResponse {
+    createdAt: Long
+    data: [Image]
+}
+
+type Image {
+    url: String
+    b64Json: String
+}
+
+input EditImageInput {
+    prompt: String!
+    n: Int
+    size: ImageSize
+    responseFormat: ImageResponseFormat
+    user: String
+}

@@ -1,0 +1,20 @@
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+.mvn/wrapper/MavenWrapperDownloader.java
+
+# Common Maven ignored files
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# IDE-specific files (optional based on what IDE you use)
+.idea/
+*.iml
+*.class
+*.log
+.classpath
+.factorypath
+.project
+
+# Eclipse-specific
+.settings/
