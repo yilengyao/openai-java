@@ -2,7 +2,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.yilengyao</groupId>
+  <groupId>io.github.yilengyao</groupId>
   <artifactId>openai</artifactId>
   <packaging>jar</packaging>
   <version>0.0.1</version>
@@ -17,7 +17,7 @@
     <junit.version>3.8.1</junit.version>
     <dgs.version>5.5.0</dgs.version>
     <graphqlcodegen.version>1.18</graphqlcodegen.version>
-    <spring.webflux.version>6.0.6</spring.webflux.version>
+    <spring.framework.version>6.0.6</spring.framework.version>
   </properties>
 
   <dependencies>
@@ -26,7 +26,14 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
-      <version>${spring.webflux.version}</version>
+      <version>${spring.framework.version}</version>
+    </dependency>
+
+    <!-- Spring Context Dependency -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.framework.version}</version>
     </dependency>
 
     <!-- Lombok -->
