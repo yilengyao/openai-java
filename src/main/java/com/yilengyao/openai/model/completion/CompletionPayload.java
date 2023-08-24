@@ -14,6 +14,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents the payload for a completion request.
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,6 +55,12 @@ public class CompletionPayload {
   @JsonProperty("user")
   String user;
 
+  /**
+   * Converts a GraphQL input to a CompletionPayload instance.
+   *
+   * @param input The GraphQL input representation.
+   * @return A CompletionPayload instance.
+   */
   public static CompletionPayload fromGraphQl(CompletionInput input) {
     var payload = new CompletionPayload();
     payload.setModel(input.getModel());
@@ -104,6 +113,11 @@ public class CompletionPayload {
     return payload;
   }
 
+  /**
+   * Retrieves the payload as a map of key-value pairs.
+   *
+   * @return A map containing the payload data.
+   */
   public Map<String, Object> getPayload() {
     Map<String, Object> requestParams = new HashMap<>();
     requestParams.put("model", this.getModel());

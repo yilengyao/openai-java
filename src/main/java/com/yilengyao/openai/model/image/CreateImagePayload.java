@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
+/**
+ * Represents the payload for creating an image.
+ */
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +27,12 @@ public class CreateImagePayload {
   String responseFormat;
   String user;
 
+  /**
+   * Converts a GraphQL input to a CreateImagePayload instance.
+   *
+   * @param input The GraphQL input representation.
+   * @return A CreateImagePayload instance.
+   */
   public static CreateImagePayload fromGraphQl(CreateImageInput input) {
     var payload = new CreateImagePayload();
     payload.setPrompt(input.getPrompt());
@@ -51,6 +60,11 @@ public class CreateImagePayload {
     return payload;
   }
 
+  /**
+   * Retrieves the payload for image creation as a map of key-value pairs.
+   *
+   * @return A map containing the payload data.
+   */
   public Map<String, Object> getPayload() {
     Map<String, Object> requestParams = new HashMap<>();
     requestParams.put("prompt", this.getPrompt());
