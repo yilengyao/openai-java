@@ -1,8 +1,12 @@
 package com.yilengyao.openai.model.completion;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
+/**
+ * Represents a choice in a completion result.
+ */
 @Data
 public class CompletionChoice {
   String text;
@@ -11,6 +15,11 @@ public class CompletionChoice {
   @JsonProperty("finish_reason")
   String finishReason;
 
+  /**
+   * Converts this choice to a GraphQL representation.
+   * 
+   * @return the GraphQL representation of this choice.
+   */
   public com.yilengyao.openai.graphql.generated.types.CompletionChoice toGraphQl() {
     var output = com.yilengyao.openai.graphql.generated.types.CompletionChoice.newBuilder();
     if (this.getText() != null) {

@@ -7,6 +7,9 @@ import com.yilengyao.openai.model.model.Usage;
 
 import lombok.Data;
 
+/**
+ * Represents a response from the completion API.
+ */
 @Data
 public class CompletionResponse {
   /**
@@ -39,6 +42,11 @@ public class CompletionResponse {
    */
   Usage usage;
 
+  /**
+   * Converts this CompletionResponse to its GraphQL representation.
+   *
+   * @return the GraphQL representation of this CompletionResponse
+   */
   public CompletionOutput toGraphQl() {
     var output = CompletionOutput.newBuilder();
     output.id(this.getId());
