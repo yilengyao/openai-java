@@ -1,34 +1,52 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 name: Publish package to the Maven Central Repository
+
 on:
-  release:
-    types: [created]
+  pull_request:
+    branches:
+      - main
+      - develop
+    types: [closed]
+
 jobs:
   publish:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout main branch 
-        uses: actions/checkout@v3
+      - name: Step 1 - Checkout code
+        uses: actions/checkout@v2
 
-        # Import the GPG keys to allow maven-gpg-plugin to sign the artifacts
-      - name: Import GPG key
+      - name: Step 2 - Import GPG key
         run: |
           echo "${{ secrets.GPG_PUBLIC_KEY }}" | gpg --import
           echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --import --no-tty --batch --yes
 
-      - name: Set up Maven Central Repository
-        uses: actions/setup-java@v3
+      - name: Step 3 - Set up Maven Central Repository
+        uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: "17"
+          distribution: "temurin"
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-      
-      - name: Publish package
+
+      # Set AUTO_RELEASE_AFTER_CLOSE based on branch and adjust version if develop
+      - name: Step 4 - Prepare Environment Variables and Adjust Version if Develop Branch
+        run: |
+          if [[ "${{ github.base_ref }}" == "main" ]]; then
+            echo "AUTO_RELEASE_AFTER_CLOSE=true" >> $GITHUB_ENV
+          else
+            echo "AUTO_RELEASE_AFTER_CLOSE=false" >> $GITHUB_ENV
+            # Extract current version, append -SNAPSHOT and update the pom.xml
+            VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+            NEW_VERSION="${VERSION}-SNAPSHOT-$(date +'%Y%m%d%H%M%S')"
+            mvn versions:set -DnewVersion=$NEW_VERSION
+          fi
+
+      - name: Step 5 - Publish package
         run: mvn --batch-mode deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
-          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}     
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
