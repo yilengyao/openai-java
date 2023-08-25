@@ -5,7 +5,7 @@
   <groupId>io.github.yilengyao</groupId>
   <artifactId>openai</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
   <name>OpenAI Java Library</name>
   <url>https://github.com/yilengyao/openai-java</url>
   <description>Java utility for accessing OpenAI's API</description>
@@ -162,7 +162,7 @@
         <configuration>
           <serverId>ossrh</serverId>
           <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>false</autoReleaseAfterClose>
+          <autoReleaseAfterClose>${env.AUTO_RELEASE_AFTER_CLOSE}</autoReleaseAfterClose>
         </configuration>
       </plugin>
 
