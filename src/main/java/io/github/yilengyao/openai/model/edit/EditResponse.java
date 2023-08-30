@@ -1,8 +1,8 @@
-package com.yilengyao.openai.model.edit;
+package io.github.yilengyao.openai.model.edit;
 
 import java.util.List;
 
-import com.yilengyao.openai.model.model.Usage;
+import io.github.yilengyao.openai.model.model.Usage;
 
 import lombok.Data;
 
@@ -14,8 +14,8 @@ public class EditResponse {
   public List<EditChoice> choices;
   public Usage usage;
 
-  public com.yilengyao.openai.graphql.generated.types.EditResponse toGraphQl() {
-    var output = com.yilengyao.openai.graphql.generated.types.EditResponse.newBuilder();
+  public io.github.yilengyao.openai.graphql.generated.types.EditResponse toGraphQl() {
+    var output = io.github.yilengyao.openai.graphql.generated.types.EditResponse.newBuilder();
     if (this.getObject() != null) {
       output.object(this.getObject());
     }

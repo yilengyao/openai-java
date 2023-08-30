@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.image;
+package io.github.yilengyao.openai.model.image;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ public class ImageResponse {
   Long createdAt;
   List<Image> data;
 
-  public com.yilengyao.openai.graphql.generated.types.ImageResponse toGraphQl() {
-    var output = com.yilengyao.openai.graphql.generated.types.ImageResponse.newBuilder();
+  public io.github.yilengyao.openai.graphql.generated.types.ImageResponse toGraphQl() {
+    var output = io.github.yilengyao.openai.graphql.generated.types.ImageResponse.newBuilder();
     if (this.getCreatedAt() != null) {
       output.createdAt(this.getCreatedAt());
     }

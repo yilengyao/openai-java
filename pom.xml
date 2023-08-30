@@ -5,7 +5,7 @@
   <groupId>io.github.yilengyao</groupId>
   <artifactId>openai</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2</version>
+  <version>1.0.o</version>
   <name>OpenAI Java Library</name>
   <url>https://github.com/yilengyao/openai-java</url>
   <description>Java utility for accessing OpenAI's API</description>
@@ -35,7 +35,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>17</java.version>
     <maven.compiler.version>3.8.0</maven.compiler.version>
-    <package.name>com.yilengyao.openai</package.name>
+    <package.name>io.github.yilengyao.openai</package.name>
     <lombok.version>1.18.20</lombok.version>
     <junit.version>3.8.1</junit.version>
     <dgs.version>5.5.0</dgs.version>
