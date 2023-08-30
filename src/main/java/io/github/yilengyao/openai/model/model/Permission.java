@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.model;
+package io.github.yilengyao.openai.model.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,8 +27,8 @@ public class Permission {
   @JsonProperty("is_blocking")
   public boolean isBlocking;
 
-  public com.yilengyao.openai.graphql.generated.types.Permission toGraphQl() {
-    return com.yilengyao.openai.graphql.generated.types.Permission.newBuilder()
+  public io.github.yilengyao.openai.graphql.generated.types.Permission toGraphQl() {
+    return io.github.yilengyao.openai.graphql.generated.types.Permission.newBuilder()
         .id(this.getId())
         .object(this.getObject())
         .created(this.getCreated())

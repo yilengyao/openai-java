@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.completion;
+package io.github.yilengyao.openai.model.completion;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,8 +20,8 @@ public class CompletionChoice {
    * 
    * @return the GraphQL representation of this choice.
    */
-  public com.yilengyao.openai.graphql.generated.types.CompletionChoice toGraphQl() {
-    var output = com.yilengyao.openai.graphql.generated.types.CompletionChoice.newBuilder();
+  public io.github.yilengyao.openai.graphql.generated.types.CompletionChoice toGraphQl() {
+    var output = io.github.yilengyao.openai.graphql.generated.types.CompletionChoice.newBuilder();
     if (this.getText() != null) {
       output.text(this.getText());
     }

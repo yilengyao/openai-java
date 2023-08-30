@@ -1,4 +1,4 @@
-package com.yilengyao.openai.client;
+package io.github.yilengyao.openai.client;
 
 import java.io.IOException;
 
@@ -7,15 +7,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.yilengyao.openai.model.OpenAiResponse;
-import com.yilengyao.openai.model.completion.CompletionPayload;
-import com.yilengyao.openai.model.completion.CompletionResponse;
-import com.yilengyao.openai.model.edit.EditPayload;
-import com.yilengyao.openai.model.edit.EditResponse;
-import com.yilengyao.openai.model.image.CreateImagePayload;
-import com.yilengyao.openai.model.image.EditImagePayload;
-import com.yilengyao.openai.model.image.ImageResponse;
-import com.yilengyao.openai.model.model.Model;
+import io.github.yilengyao.openai.model.OpenAiResponse;
+import io.github.yilengyao.openai.model.completion.CompletionPayload;
+import io.github.yilengyao.openai.model.completion.CompletionResponse;
+import io.github.yilengyao.openai.model.edit.EditPayload;
+import io.github.yilengyao.openai.model.edit.EditResponse;
+import io.github.yilengyao.openai.model.image.CreateImagePayload;
+import io.github.yilengyao.openai.model.image.EditImagePayload;
+import io.github.yilengyao.openai.model.image.ImageResponse;
+import io.github.yilengyao.openai.model.model.Model;
 
 public class OpenAiClientImpl implements OpenAiClient {
 

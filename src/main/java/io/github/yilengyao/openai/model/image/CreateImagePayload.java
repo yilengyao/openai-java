@@ -1,9 +1,9 @@
-package com.yilengyao.openai.model.image;
+package io.github.yilengyao.openai.model.image;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yilengyao.openai.graphql.generated.types.CreateImageInput;
+import io.github.yilengyao.openai.graphql.generated.types.CreateImageInput;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

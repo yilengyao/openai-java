@@ -1,4 +1,4 @@
-package com.yilengyao.openai.configuration;
+package io.github.yilengyao.openai.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -6,8 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.yilengyao.openai.client.OpenAiClient;
-import com.yilengyao.openai.client.OpenAiClientImpl;
+import io.github.yilengyao.openai.client.OpenAiClient;
+import io.github.yilengyao.openai.client.OpenAiClientImpl;
+
 
 /**
  * Configuration class for OpenAI client.

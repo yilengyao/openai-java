@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.model;
+package io.github.yilengyao.openai.model.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,8 +13,8 @@ public class Usage {
   @JsonProperty("total_tokens")
   Integer totalTokens;
 
-  public com.yilengyao.openai.graphql.generated.types.Usage toGraphQl() {
-    var output = com.yilengyao.openai.graphql.generated.types.Usage.newBuilder();
+  public io.github.yilengyao.openai.graphql.generated.types.Usage toGraphQl() {
+    var output = io.github.yilengyao.openai.graphql.generated.types.Usage.newBuilder();
     if (this.getPromptTokens() != null) {
       output.prompt_tokens(this.getPromptTokens());
     }

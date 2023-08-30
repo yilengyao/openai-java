@@ -1,9 +1,9 @@
-package com.yilengyao.openai.model.completion;
+package io.github.yilengyao.openai.model.completion;
 
 import java.util.List;
 
-import com.yilengyao.openai.graphql.generated.types.CompletionOutput;
-import com.yilengyao.openai.model.model.Usage;
+import io.github.yilengyao.openai.graphql.generated.types.CompletionOutput;
+import io.github.yilengyao.openai.model.model.Usage;
 
 import lombok.Data;
 

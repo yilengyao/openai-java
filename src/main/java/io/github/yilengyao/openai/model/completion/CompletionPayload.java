@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.completion;
+package io.github.yilengyao.openai.model.completion;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yilengyao.openai.graphql.generated.types.CompletionInput;
-import com.yilengyao.openai.graphql.generated.types.LogitBiasInput;
+import io.github.yilengyao.openai.graphql.generated.types.CompletionInput;
+import io.github.yilengyao.openai.graphql.generated.types.LogitBiasInput;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

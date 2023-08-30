@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.image;
+package io.github.yilengyao.openai.model.image;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,8 +11,8 @@ public class Image {
   @JsonProperty("b64_json")
   String b64Json;
 
-  com.yilengyao.openai.graphql.generated.types.Image toGraphQl() {
-    var output = com.yilengyao.openai.graphql.generated.types.Image.newBuilder();
+  io.github.yilengyao.openai.graphql.generated.types.Image toGraphQl() {
+    var output = io.github.yilengyao.openai.graphql.generated.types.Image.newBuilder();
     if (this.getUrl() != null) {
       output.url(this.getUrl());
     }

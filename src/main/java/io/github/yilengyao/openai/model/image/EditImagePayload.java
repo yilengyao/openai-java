@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.image;
+package io.github.yilengyao.openai.model.image;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,7 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.yilengyao.openai.graphql.generated.types.EditImageInput;
+import io.github.yilengyao.openai.graphql.generated.types.EditImageInput;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

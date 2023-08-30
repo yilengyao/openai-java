@@ -1,10 +1,10 @@
-package com.yilengyao.openai.model.edit;
+package io.github.yilengyao.openai.model.edit;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yilengyao.openai.graphql.generated.types.EditInput;
+import io.github.yilengyao.openai.graphql.generated.types.EditInput;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

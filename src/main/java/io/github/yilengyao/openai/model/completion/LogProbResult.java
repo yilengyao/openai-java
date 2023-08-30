@@ -1,10 +1,10 @@
-package com.yilengyao.openai.model.completion;
+package io.github.yilengyao.openai.model.completion;
 
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yilengyao.openai.graphql.generated.types.TopLogProb;
+import io.github.yilengyao.openai.graphql.generated.types.TopLogProb;
 
 import lombok.Data;
 
@@ -18,8 +18,8 @@ public class LogProbResult {
   @JsonProperty("text_offset")
   List<Integer> textOffset;
 
-  public com.yilengyao.openai.graphql.generated.types.LogProbResult toGraphQl() {
-    var output = com.yilengyao.openai.graphql.generated.types.LogProbResult.newBuilder();
+  public io.github.yilengyao.openai.graphql.generated.types.LogProbResult toGraphQl() {
+    var output = io.github.yilengyao.openai.graphql.generated.types.LogProbResult.newBuilder();
     if (this.getTokens() != null) {
       output.tokens(this.getTokens());
     }

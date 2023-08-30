@@ -1,4 +1,4 @@
-package com.yilengyao.openai.model.model;
+package io.github.yilengyao.openai.model.model;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ public class Model {
   public String root;
   public String parent;
 
-  public com.yilengyao.openai.graphql.generated.types.Model toGraphQl() {
-    return com.yilengyao.openai.graphql.generated.types.Model.newBuilder()
+  public io.github.yilengyao.openai.graphql.generated.types.Model toGraphQl() {
+    return io.github.yilengyao.openai.graphql.generated.types.Model.newBuilder()
         .id(this.getId())
         .object(this.getObject())
         .created(this.getCreated())

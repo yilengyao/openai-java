@@ -1,7 +1,8 @@
-package com.yilengyao.openai.configuration;
+package io.github.yilengyao.openai.configuration;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsRuntimeWiring;
+
 import graphql.scalars.ExtendedScalars;
 import graphql.schema.idl.RuntimeWiring;
 
