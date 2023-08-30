@@ -12,7 +12,6 @@ import io.github.yilengyao.openai.model.image.EditImagePayload;
 import io.github.yilengyao.openai.model.image.ImageResponse;
 import io.github.yilengyao.openai.model.model.Model;
 
-
 public interface OpenAiClient {
 
   public Model models(String id);

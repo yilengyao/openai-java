@@ -1,4 +1,5 @@
 package io.github.yilengyao.openai.configuration;
+
 /**
  * Marker interface for application-specific Spring component scanning.
  * 

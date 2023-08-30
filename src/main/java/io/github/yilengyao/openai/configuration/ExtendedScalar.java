@@ -7,14 +7,16 @@ import graphql.scalars.ExtendedScalars;
 import graphql.schema.idl.RuntimeWiring;
 
 /**
- * graphql-java provides optional scalars in the graphql-java-extended-scalars library.
- * We can wire a scalar from this library by adding the scalar to the RuntimeWiring.
+ * graphql-java provides optional scalars in the graphql-java-extended-scalars
+ * library.
+ * We can wire a scalar from this library by adding the scalar to the
+ * RuntimeWiring.
  */
 @DgsComponent
 public class ExtendedScalar {
 
-    @DgsRuntimeWiring
-    public RuntimeWiring.Builder addScalar(RuntimeWiring.Builder builder) {
-        return builder.scalar(ExtendedScalars.GraphQLLong);
-    }
+  @DgsRuntimeWiring
+  public RuntimeWiring.Builder addScalar(RuntimeWiring.Builder builder) {
+    return builder.scalar(ExtendedScalars.GraphQLLong);
+  }
 }

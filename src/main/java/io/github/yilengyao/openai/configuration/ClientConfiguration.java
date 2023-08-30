@@ -9,7 +9,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import io.github.yilengyao.openai.client.OpenAiClient;
 import io.github.yilengyao.openai.client.OpenAiClientImpl;
 
-
 /**
  * Configuration class for OpenAI client.
  * <p>
