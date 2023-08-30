@@ -5,7 +5,7 @@
   <groupId>io.github.yilengyao</groupId>
   <artifactId>openai</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.o</version>
+  <version>1.0.0</version>
   <name>OpenAI Java Library</name>
   <url>https://github.com/yilengyao/openai-java</url>
   <description>Java utility for accessing OpenAI's API</description>
