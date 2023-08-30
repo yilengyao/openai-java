@@ -31,6 +31,10 @@ public class ClientConfiguration {
    */
   @Bean
   public OpenAiClient getOpenAiClient(@Value("${OPENAI_API_KEY}") String openAiApiKey) {
+    if (openAiApiKey.isEmpty()) {
+      throw new IllegalArgumentException("OPENAI_API_KEY is not set. Please set it as a environment variable before starting the application.");
+    }
+
     final int size = 100 * 1024 * 1024;
     final String authorizationValue = "Bearer " + openAiApiKey;
     final ExchangeStrategies strategies = ExchangeStrategies.builder()
