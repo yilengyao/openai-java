@@ -1,10 +1,13 @@
 package io.github.yilengyao.openai.configuration;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import io.github.yilengyao.openai.client.OpenAiClient;
 import io.github.yilengyao.openai.client.OpenAiClientImpl;
@@ -16,12 +19,16 @@ import io.github.yilengyao.openai.client.OpenAiClientImpl;
  * to interact with the OpenAI API.
  * </p>
  */
+@Slf4j
 @Configuration
 public class ClientConfiguration {
   private static final String OPENAI_BASE_URI = "https://api.openai.com";
   private static final String CONTENT_TYPE_HEADER = "Content-Type";
   private static final String CONTENT_TYPE_VALUE = "application/json";
   private static final String AUTHORIZATION_HEADER = "Authorization";
+
+  @Autowired
+  private ConfigurableApplicationContext appContext;
 
   /**
    * Provides an instance of the OpenAI client.
@@ -30,9 +37,12 @@ public class ClientConfiguration {
    * @return An instance of the OpenAI client.
    */
   @Bean
-  public OpenAiClient getOpenAiClient(@Value("${OPENAI_API_KEY}") String openAiApiKey) {
+  public OpenAiClient getOpenAiClient(@Value("${OPENAI_API_KEY:}") String openAiApiKey) {
     if (openAiApiKey.isEmpty()) {
-      throw new IllegalArgumentException("OPENAI_API_KEY is not set. Please set it as a environment variable before starting the application.");
+      log.error("OPENAI_API_KEY is not set. Please set it as an environment variable before starting the application.");
+      appContext.close(); // Gracefully shutdown the application context
+      throw new IllegalArgumentException(
+          "OPENAI_API_KEY is not set. Please set it as a environment variable before starting the application.");
     }
 
     final int size = 100 * 1024 * 1024;

@@ -1,4 +1,4 @@
-package com.yilengyao;
+package io.github.yilengyao.openai;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

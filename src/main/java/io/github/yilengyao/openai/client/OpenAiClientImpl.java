@@ -67,6 +67,7 @@ public class OpenAiClientImpl implements OpenAiClient {
         .block();
   }
 
+  @Deprecated
   @Override
   public EditResponse edit(EditPayload payload) {
     return openAiWebClient

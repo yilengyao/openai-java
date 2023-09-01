@@ -11,7 +11,7 @@ type Query {
 
 type Mutation {
     completion(completionInput: CompletionInput!): CompletionOutput
-    edit(editInput: EditInput!): EditResponse
+    edit(editInput: EditInput!): EditResponse @deprecated(reason: "Deprecated on 2024-01-04	replace with Completion endpoint")
     createImage(createImageInput: CreateImageInput!): ImageResponse
     editImage(image: Upload!, mask: Upload, editImageInput: EditImageInput!): ImageResponse
 }
