@@ -5,8 +5,10 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.github.yilengyao.openai.exceptions.OpenAiException;
 import io.github.yilengyao.openai.model.OpenAiResponse;
 import io.github.yilengyao.openai.model.completion.CompletionPayload;
 import io.github.yilengyao.openai.model.completion.CompletionResponse;
@@ -16,7 +18,10 @@ import io.github.yilengyao.openai.model.image.CreateImagePayload;
 import io.github.yilengyao.openai.model.image.EditImagePayload;
 import io.github.yilengyao.openai.model.image.ImageResponse;
 import io.github.yilengyao.openai.model.model.Model;
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
+@Slf4j
 public class OpenAiClientImpl implements OpenAiClient {
 
   public static final String MODELS_ENDPOINT = "/v1/models";
@@ -42,7 +47,15 @@ public class OpenAiClientImpl implements OpenAiClient {
         .get()
         .uri(String.join("/", MODELS_ENDPOINT, id))
         .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
         .bodyToMono(Model.class)
+        .doOnError(ex -> {
+          if (ex instanceof OpenAiException) {
+            OpenAiException openAiEx = (OpenAiException) ex;
+            log.error("Error calling OpenAI API: Status Code: {} - Message: {}", openAiEx.getStatusCode(),
+                openAiEx.getErrorMessage());
+          }
+        })
         .block();
   }
 
@@ -52,7 +65,15 @@ public class OpenAiClientImpl implements OpenAiClient {
         .get()
         .uri(MODELS_ENDPOINT)
         .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
         .bodyToMono(OpenAiResponse.class)
+        .doOnError(ex -> {
+          if (ex instanceof OpenAiException) {
+            OpenAiException openAiEx = (OpenAiException) ex;
+            log.error("Error calling OpenAI API: Status Code: {} - Message: {}", openAiEx.getStatusCode(),
+                openAiEx.getErrorMessage());
+          }
+        })
         .block();
   }
 
@@ -63,7 +84,15 @@ public class OpenAiClientImpl implements OpenAiClient {
         .uri(COMPLETION_ENDPOINT)
         .body(BodyInserters.fromValue(payload.getPayload()))
         .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
         .bodyToMono(CompletionResponse.class)
+        .doOnError(ex -> {
+          if (ex instanceof OpenAiException) {
+            OpenAiException openAiEx = (OpenAiException) ex;
+            log.error("Error calling OpenAI API: Status Code: {} - Message: {}", openAiEx.getStatusCode(),
+                openAiEx.getErrorMessage());
+          }
+        })
         .block();
   }
 
@@ -75,28 +104,41 @@ public class OpenAiClientImpl implements OpenAiClient {
         .uri(EDIT_ENDPOINT)
         .body(BodyInserters.fromValue(payload.getPayload()))
         .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
         .bodyToMono(EditResponse.class)
+        .doOnError(ex -> {
+          if (ex instanceof OpenAiException) {
+            OpenAiException openAiEx = (OpenAiException) ex;
+            log.error("Error calling OpenAI API: Status Code: {} - Message: {}", openAiEx.getStatusCode(),
+                openAiEx.getErrorMessage());
+          }
+        })
         .block();
   }
 
   @Override
   public ImageResponse createImage(CreateImagePayload payload) {
+    WebClient client = openAiWebClient;
+
     if (payload.getPayload().containsKey("response_format") &&
         payload.getPayload().get("response_format").equals("b64_json")) {
-      return largeBufferOpenAiWebClient
-          .post()
-          .uri(CREATE_IMAGE_ENDPOINT)
-          .body(BodyInserters.fromValue(payload.getPayload()))
-          .retrieve()
-          .bodyToMono(ImageResponse.class)
-          .block();
+      client = largeBufferOpenAiWebClient;
     }
-    return openAiWebClient
+
+    return client
         .post()
         .uri(CREATE_IMAGE_ENDPOINT)
         .body(BodyInserters.fromValue(payload.getPayload()))
         .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
         .bodyToMono(ImageResponse.class)
+        .doOnError(ex -> {
+          if (ex instanceof OpenAiException) {
+            OpenAiException openAiEx = (OpenAiException) ex;
+            log.error("error calling OpenAI API: Status Code: {} - Message: {}", openAiEx.getStatusCode(),
+                openAiEx.getErrorMessage());
+          }
+        })
         .block();
   }
 
@@ -109,8 +151,21 @@ public class OpenAiClientImpl implements OpenAiClient {
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .body(BodyInserters.fromMultipartData(payload.getPayload()))
         .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
         .bodyToMono(ImageResponse.class)
+        .doOnError(ex -> {
+          if (ex instanceof OpenAiException) {
+            OpenAiException openAiEx = (OpenAiException) ex;
+            log.error("Error calling OpenAI API: Status Code: {} - Message: {}", openAiEx.getStatusCode(),
+                openAiEx.getErrorMessage());
+          }
+        })
         .block();
   }
 
+  private Mono<Throwable> handleErrorResponse(ClientResponse clientResponse) {
+    return clientResponse.bodyToMono(String.class).flatMap(errorMessage -> {
+      return Mono.error(new OpenAiException(clientResponse.statusCode().value(), errorMessage));
+    });
+  }
 }
