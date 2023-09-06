@@ -12,6 +12,7 @@ import io.github.yilengyao.openai.exceptions.OpenAiException;
 import io.github.yilengyao.openai.model.OpenAiResponse;
 import io.github.yilengyao.openai.model.TextResponse;
 import io.github.yilengyao.openai.model.audio.TranscriptionPayload;
+import io.github.yilengyao.openai.model.audio.TranslationPayload;
 import io.github.yilengyao.openai.model.chat.ChatCompletion;
 import io.github.yilengyao.openai.model.chat.ChatCompletionChunk;
 import io.github.yilengyao.openai.model.chat.ChatCompletionPayload;
@@ -32,6 +33,7 @@ import reactor.core.publisher.Mono;
 public class OpenAiClientImpl implements OpenAiClient {
 
   public static final String TRANSCRIPTION_ENDPOINT = "/v1/audio/transcriptions";
+  public static final String TRANSLATION_ENDPOINT = "/v1/audio/translations";
   public static final String MODELS_ENDPOINT = "/v1/models";
   public static final String COMPLETION_ENDPOINT = "/v1/completions";
   public static final String CHAT_ENDPOINT = "/v1/chat/completions";
@@ -55,6 +57,19 @@ public class OpenAiClientImpl implements OpenAiClient {
     return openAiWebClient
         .post()
         .uri(TRANSCRIPTION_ENDPOINT)
+        .contentType(MediaType.MULTIPART_FORM_DATA)
+        .body(BodyInserters.fromMultipartData(payload.getPayload()))
+        .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
+        .bodyToMono(TextResponse.class)
+        .doOnError(this::handleErrorLogging)
+        .block();
+  }
+
+  public TextResponse createTranslation(TranslationPayload payload) throws IOException {
+    return openAiWebClient
+        .post()
+        .uri(TRANSLATION_ENDPOINT)
         .contentType(MediaType.MULTIPART_FORM_DATA)
         .body(BodyInserters.fromMultipartData(payload.getPayload()))
         .retrieve()
