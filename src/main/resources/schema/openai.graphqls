@@ -11,11 +11,24 @@ type Query {
 }
 
 type Mutation {
+    createTranscription(file: Upload!, transcriptionInput: TranscriptionInput!): TextResponse 
     completion(completionInput: CompletionInput!): CompletionOutput
     chatCompletion(chatInput: ChatCompletionInput!): ChatCompletionResult
     edit(editInput: EditInput!): EditResponse @deprecated(reason: "Deprecated on 2024-01-04	replace with Completion endpoint")
     createImage(createImageInput: CreateImageInput!): ImageResponse
     editImage(image: Upload!, mask: Upload, editImageInput: EditImageInput!): ImageResponse
+}
+
+input TranscriptionInput {
+    model: String!
+    prompt: String
+    responseFormat: String
+    temperature: Float
+    language: String
+}
+
+type TextResponse {
+    text: String!
 }
 
 type Model {

@@ -1,4 +1,4 @@
-package io.github.yilengyao.openai.validation;
+package io.github.yilengyao.openai.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

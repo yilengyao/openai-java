@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import io.github.yilengyao.openai.exceptions.OpenAiException;
 import io.github.yilengyao.openai.model.OpenAiResponse;
+import io.github.yilengyao.openai.model.TextResponse;
+import io.github.yilengyao.openai.model.audio.TranscriptionPayload;
 import io.github.yilengyao.openai.model.chat.ChatCompletion;
 import io.github.yilengyao.openai.model.chat.ChatCompletionChunk;
 import io.github.yilengyao.openai.model.chat.ChatCompletionPayload;
@@ -21,7 +23,7 @@ import io.github.yilengyao.openai.model.image.CreateImagePayload;
 import io.github.yilengyao.openai.model.image.EditImagePayload;
 import io.github.yilengyao.openai.model.image.ImageResponse;
 import io.github.yilengyao.openai.model.model.Model;
-import io.github.yilengyao.openai.validation.ValidateFieldValue;
+import io.github.yilengyao.openai.util.ValidateFieldValue;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,6 +31,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class OpenAiClientImpl implements OpenAiClient {
 
+  public static final String TRANSCRIPTION_ENDPOINT = "/v1/audio/transcriptions";
   public static final String MODELS_ENDPOINT = "/v1/models";
   public static final String COMPLETION_ENDPOINT = "/v1/completions";
   public static final String CHAT_ENDPOINT = "/v1/chat/completions";
@@ -45,6 +48,20 @@ public class OpenAiClientImpl implements OpenAiClient {
       WebClient largeBufferOpenAiWebClient) {
     this.openAiWebClient = openAiWebClient;
     this.largeBufferOpenAiWebClient = largeBufferOpenAiWebClient;
+  }
+
+  @Override
+  public TextResponse createTranscription(TranscriptionPayload payload) throws IOException {
+    return openAiWebClient
+        .post()
+        .uri(TRANSCRIPTION_ENDPOINT)
+        .contentType(MediaType.MULTIPART_FORM_DATA)
+        .body(BodyInserters.fromMultipartData(payload.getPayload()))
+        .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
+        .bodyToMono(TextResponse.class)
+        .doOnError(this::handleErrorLogging)
+        .block();
   }
 
   @Override
@@ -85,32 +102,31 @@ public class OpenAiClientImpl implements OpenAiClient {
   }
 
   @Override
-  @ValidateFieldValue(fieldName="stream", expectedValue="false", errorMessage="Invalid stream value for ChatCompletionPayload, should be false but was true")
+  @ValidateFieldValue(fieldName = "stream", expectedValue = "false", errorMessage = "Invalid stream value for ChatCompletionPayload, should be false but was true")
   public ChatCompletion createChatCompletion(ChatCompletionPayload payload) {
     return openAiWebClient
-    .post()
-    .uri(CHAT_ENDPOINT)
-    .body(BodyInserters.fromValue(payload.getPayload()))
-    .retrieve()
-    .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
-    .bodyToMono(ChatCompletion.class)
-    .doOnError(this::handleErrorLogging)
-    .block();
+        .post()
+        .uri(CHAT_ENDPOINT)
+        .body(BodyInserters.fromValue(payload.getPayload()))
+        .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
+        .bodyToMono(ChatCompletion.class)
+        .doOnError(this::handleErrorLogging)
+        .block();
   }
 
   @Override
-  @ValidateFieldValue(fieldName="stream", expectedValue="true", errorMessage="Invalid stream value for ChatCompletionPayload, should be true but was false")
+  @ValidateFieldValue(fieldName = "stream", expectedValue = "true", errorMessage = "Invalid stream value for ChatCompletionPayload, should be true but was false")
   public Flux<ChatCompletionChunk> streamChatCompletion(ChatCompletionPayload payload) {
     return openAiWebClient
-    .post()
-    .uri(CHAT_ENDPOINT)
-    .body(BodyInserters.fromValue(payload.getPayload()))
-    .retrieve()
-    .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
-    .bodyToFlux(ChatCompletionChunk.class)
-    .doOnError(this::handleErrorLogging);
+        .post()
+        .uri(CHAT_ENDPOINT)
+        .body(BodyInserters.fromValue(payload.getPayload()))
+        .retrieve()
+        .onStatus(status -> status.is4xxClientError() || status.is5xxServerError(), this::handleErrorResponse)
+        .bodyToFlux(ChatCompletionChunk.class)
+        .doOnError(this::handleErrorLogging);
   }
-
 
   @Deprecated
   @Override
