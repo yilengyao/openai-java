@@ -1,6 +1,7 @@
 scalar Long
 scalar Upload
-
+scalar Object 
+  
 directive @connection on UNION
 
 union ModelsOutput @connection = OpenAiResponse | Model
@@ -10,10 +11,32 @@ type Query {
 }
 
 type Mutation {
+    createTranscription(file: Upload!, transcriptionInput: TranscriptionInput!): TextResponse 
+    createTranslation(file: Upload!, translationInput: TranslationInput!): TextResponse
     completion(completionInput: CompletionInput!): CompletionOutput
-    edit(editInput: EditInput!): EditResponse
+    chatCompletion(chatInput: ChatCompletionInput!): ChatCompletionResult
+    edit(editInput: EditInput!): EditResponse @deprecated(reason: "Deprecated on 2024-01-04	replace with Completion endpoint")
     createImage(createImageInput: CreateImageInput!): ImageResponse
     editImage(image: Upload!, mask: Upload, editImageInput: EditImageInput!): ImageResponse
+}
+
+input TranscriptionInput {
+    model: String!
+    prompt: String
+    responseFormat: String
+    temperature: Float
+    language: String
+}
+
+input TranslationInput {
+    model: String!
+    prompt: String
+    responseFormat: String
+    temperature: Float
+}
+
+type TextResponse {
+    text: String!
 }
 
 type Model {
@@ -84,6 +107,88 @@ type CompletionChoice {
     index: Int
     logprobs: LogProbResult
     finish_reason: String
+}
+
+input ChatCompletionInput {
+  model: String!
+  messages: [MessageInput]!
+  functions: [FunctionInput]
+  function_call: String
+  temperature: Float
+  top_p: Float
+  n: Int
+  stream: Boolean
+  stop: [String]
+  max_tokens: Int
+  presence_penalty: Float
+  frequency_penalty: Float
+  logit_bias: [LogitBiasInput]
+  user: String
+}
+
+input MessageInput {
+  role: String!
+  content: String
+  name: String
+  function_call: FunctionCallInput 
+}
+
+input FunctionCallInput {
+  name: String!
+  arguments: String!
+}
+
+input FunctionInput {
+  name: String!
+  description: String
+  parameters: ParameterInput!
+}
+
+input ParameterInput {
+  type: String!
+  properties: Object!
+}
+
+union ChatCompletionResult = ChatCompletion | ChatCompletionChunk
+
+type ChatCompletion {
+  id: String!
+  object: String!
+  create: Long!
+  model: String!
+  choices: [ChatCompletionChoice!]!
+  usage: Usage!
+}
+
+type ChatCompletionChunk {
+  id: String!
+  object: String!
+  created: Long!
+  model: String!
+  choices: [ChatCompletionChunkChoice!]!
+}
+
+type ChatCompletionChoice {
+  index: Int!
+  message: ChatContent!
+  finish_reason: String!
+}
+
+type ChatCompletionChunkChoice {
+  index: Int!
+  delta: ChatContent!
+  finish_reason: String
+}
+
+type ChatContent {
+  role: String!
+  content: String
+  function_call: FunctionCall
+}
+
+type FunctionCall {
+  name: String!
+  arguments: String!
 }
 
 type LogProbResult {

@@ -1,7 +1,5 @@
 package io.github.yilengyao.openai.model.image;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.springframework.core.io.FileSystemResource;
@@ -10,7 +8,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.github.yilengyao.openai.graphql.generated.types.EditImageInput;
-
+import io.github.yilengyao.openai.util.FileUtility;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +27,12 @@ public class EditImagePayload {
   String responseFormat;
   String user;
 
+  /**
+   * @param image
+   * @param mask
+   * @param input
+   * @return
+   */
   public static EditImagePayload fromGraphQl(MultipartFile image, MultipartFile mask, EditImageInput input) {
     var payload = new EditImagePayload();
     payload.setImage(image);
@@ -60,12 +64,16 @@ public class EditImagePayload {
     return payload;
   }
 
+  /**
+   * @return
+   * @throws IOException
+   */
   public MultiValueMap<String, Object> getPayload() throws IOException {
     MultiValueMap<String, Object> requestParam = new LinkedMultiValueMap<>();
-    requestParam.add("image", new FileSystemResource(multipartFileToFile(this.getImage())));
+    requestParam.add("image", new FileSystemResource(FileUtility.multipartFileToFile(this.getImage())));
     requestParam.add("prompt", this.getPrompt());
     if (this.getMask() != null) {
-      requestParam.add("mask", new FileSystemResource(multipartFileToFile(this.getMask())));
+      requestParam.add("mask", new FileSystemResource(FileUtility.multipartFileToFile(this.getMask())));
     }
     if (this.getN() != null) {
       requestParam.add("n", this.getN());
@@ -80,15 +88,6 @@ public class EditImagePayload {
       requestParam.add("user", this.getUser());
     }
     return requestParam;
-  }
-
-  private File multipartFileToFile(MultipartFile multipartFile) throws IOException {
-    File file = new File(multipartFile.getOriginalFilename());
-    file.createNewFile();
-    FileOutputStream fos = new FileOutputStream(file);
-    fos.write(multipartFile.getBytes());
-    fos.close();
-    return file;
   }
 
 }
