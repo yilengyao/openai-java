@@ -1,19 +1,15 @@
 package io.github.yilengyao.openai.model.completion;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import io.github.yilengyao.openai.model.AbstractCompletionChoice;
 import lombok.Data;
 
 /**
  * Represents a choice in a completion result.
  */
 @Data
-public class CompletionChoice {
+public class CompletionChoice extends AbstractCompletionChoice {
   String text;
-  Integer index;
   LogProbResult logprobs;
-  @JsonProperty("finish_reason")
-  String finishReason;
 
   /**
    * Converts this choice to a GraphQL representation.

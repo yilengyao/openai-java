@@ -17,6 +17,7 @@ public class ExtendedScalar {
 
   @DgsRuntimeWiring
   public RuntimeWiring.Builder addScalar(RuntimeWiring.Builder builder) {
-    return builder.scalar(ExtendedScalars.GraphQLLong);
+    return builder.scalar(ExtendedScalars.GraphQLLong)
+    .scalar(ExtendedScalars.Object);
   }
 }
