@@ -157,7 +157,7 @@ Uploading the Audio File:
 - Locate the ellipsis (...) next to Upload and click on it.
 - Choose an audio file from your device. OpenAI only support formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
 
-https://github.com/yilengyao/openai-java/assets/31053252/248b7ee8-e85e-44c0-b38b-a1f4c2ea4316
+https://github-production-user-asset-6210df.s3.amazonaws.com/31053252/266438265-12598a15-1fd4-4ee1-a578-904ce44b2b8a.mp4
 
 ### Handling CSRF Prevention Header Error:
 If you encounter a CSRF prevention header error in Altair
@@ -494,6 +494,8 @@ mutation CreateImage {
   }
 }
 ```
+https://github-production-user-asset-6210df.s3.amazonaws.com/31053252/266438260-248b7ee8-e85e-44c0-b38b-a1f4c2ea4316.mp4
+
 ### [Edit Images](https://platform.openai.com/docs/api-reference/images/createEdit)
 This endpoint allows you to edit an existing image and a prompt.
 
@@ -542,6 +544,9 @@ Uploading the Image File:
 
 - Locate the ellipsis (...) next to Upload and click on it.
 - Choose an image file from your device. The image must be in png format, square, and less than 4MB.
+
+https://github.com/yilengyao/openai-java/assets/31053252/4c38f2c4-a79c-4f67-955d-18892b799b62
+
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
