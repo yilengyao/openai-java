@@ -1,6 +1,6 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
-name: Publish package to the Maven Central Repository
+name: Publish Package to Maven Central
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Step 1 - Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Step 2 - Import GPG key
         run: |
@@ -23,7 +23,7 @@ jobs:
           echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --import --no-tty --batch --yes
 
       - name: Step 3 - Set up Maven Central Repository
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: "17"
           distribution: "temurin"
@@ -40,7 +40,7 @@ jobs:
             echo "AUTO_RELEASE_AFTER_CLOSE=false" >> $GITHUB_ENV
             # Extract current version, append -SNAPSHOT and update the pom.xml
             VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-            NEW_VERSION="${VERSION}-SNAPSHOT-$(date +'%Y%m%d%H%M%S')"
+            NEW_VERSION="${VERSION}.$(date +'%Y%m%d%H%M%S')-SNAPSHOT"
             mvn versions:set -DnewVersion=$NEW_VERSION
           fi
 
