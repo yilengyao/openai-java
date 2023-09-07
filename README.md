@@ -157,8 +157,12 @@ Uploading the Audio File:
 - Locate the ellipsis (...) next to Upload and click on it.
 - Choose an audio file from your device. OpenAI only support formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.
 
-![AudioTranslation](https://github.com/yilengyao/openai-java/assets/31053252/248b7ee8-e85e-44c0-b38b-a1f4c2ea4316)
-https://github.com/yilengyao/openai-java/assets/31053252/248b7ee8-e85e-44c0-b38b-a1f4c2ea4316
+<p align="center">
+  <video width="100%" controls>
+    <source src="https://github.com/yilengyao/openai-java/raw/main/assets/31053252/248b7ee8-e85e-44c0-b38b-a1f4c2ea4316.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+  </video>
+</p>
 
 ### Handling CSRF Prevention Header Error:
 If you encounter a CSRF prevention header error in Altair
